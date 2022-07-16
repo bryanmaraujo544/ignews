@@ -19,7 +19,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/pages/_document.jsx"
+    "src/pages/_document.jsx",
+    "prismicio.js"
   ],
   "exclude": ["node_modules"]
 }
