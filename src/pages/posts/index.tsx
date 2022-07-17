@@ -1,11 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import styles from './styles.module.scss';
-import { useAllPrismicDocumentsByType as getAllPrismicDocumentsByType } from '@prismicio/react';
-import { prismic } from '../../services/prismic';
-import Prismic from '@prismicio/client';
-import { useEffect } from 'react';
 import { createClient } from '../../../prismicio';
 
 type Post = {
@@ -29,11 +26,13 @@ export default function Posts({ posts }: Props) {
       <main className={styles.container}>
         <div className={styles.posts}>
           {posts.map(({ slug, excerpt, title, updatedAt }) => (
-            <a href="" key={slug}>
-              <time>{updatedAt}</time>
-              <strong>{title}</strong>
-              <p>{excerpt}</p>
-            </a>
+            <Link href={`/posts/${slug}`} key={slug}>
+              <a>
+                <time>{updatedAt}</time>
+                <strong>{title}</strong>
+                <p>{excerpt}</p>
+              </a>
+            </Link>
           ))}
         </div>
       </main>
