@@ -1,6 +1,7 @@
 .headerContainer {
   height: 5rem;
   border-bottom: 1px solid var(--gray-800);
+  position: relative;
 }
 
 .headerContent {
@@ -15,6 +16,33 @@
   nav {
     margin-left: 5rem;
     height: 5rem;
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    @media (max-width: 768px) {
+      // display: none;
+      position: absolute;
+      min-height: 100vh;
+      height: 100%;
+      width: 90%;
+      max-width: 280px;
+      right: 0;
+      top: 0;
+      background: var(--gray-850);
+
+      display: none;
+      flex-direction: column;
+      padding: 2rem;
+
+      &.closed {
+        display: none;
+      }
+
+      &.opened {
+        display: flex;
+      }
+    }
 
     a {
       display: inline-block;
@@ -26,6 +54,10 @@
 
       & + a {
         margin-left: 2rem;
+
+        @media (max-width: 768px) {
+          margin-left: 0;
+        }
       }
 
       &:hover {
@@ -53,5 +85,49 @@
 
   button {
     margin-left: auto;
+
+    @media (max-width: 768px) {
+      // display: none;
+      background: var(--gray-900);
+      align-self: flex-start;
+      margin-top: auto;
+    }
+  }
+
+  .closeBtn {
+    display: none;
+    position: absolute;
+    background: none;
+    border: 0;
+    right: 0.5rem;
+    top: 0.5rem;
+    font-size: 2rem;
+    color: #fff !important;
+
+    @media (max-width: 768px) {
+      display: block;
+    }
+
+    @media (max-width: 478px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  .menuBtn {
+    margin-left: auto;
+    display: none;
+    background: none;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+    color: var(--white);
+    font-size: 1.8rem;
+    margin-top: 0;
+    align-self: auto;
+
+    @media (max-width: 768px) {
+      display: block;
+    }
   }
 }
