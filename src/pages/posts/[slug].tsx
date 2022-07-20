@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
+import { unstable_getServerSession } from 'next-auth';
 import Head from 'next/head';
+import { authOptions } from '../api/auth/[...nextauth]';
 import { RichText } from 'prismic-dom';
 import { createClient } from '../../../prismicio';
 import styles from './post.module.scss';
@@ -14,8 +15,6 @@ interface Props {
 }
 
 export default function Post({ post }: Props) {
-  console.log({ post });
-
   return (
     <>
       <Head>
@@ -38,14 +37,22 @@ export default function Post({ post }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
+  res,
   params,
   previewData,
 }) => {
-  const session = await getSession({ req });
+  const session = await unstable_getServerSession(req, res, authOptions);
   const { slug } = params;
-  console.log(slug);
 
-  // if (!session) {}
+  console.log({ session });
+  if (!session?.activeSubscription) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   const prismic = createClient({
     previewData,
@@ -53,14 +60,11 @@ export const getServerSideProps: GetServerSideProps = async ({
   });
 
   const response = await prismic.getByUID('post', String(slug));
-  console.log({ response });
 
   const post = {
     slug,
-    title: response?.data?.Title ?? response?.data?.title,
-    content: RichText.asHtml(
-      response?.data?.Content ?? response?.data?.content
-    ),
+    title: response.data.title,
+    content: RichText.asHtml(response.data.content),
     updatedAt: new Date(response.last_publication_date).toLocaleDateString(
       'pt-BR',
       {
