@@ -22,8 +22,6 @@ export default function PostPreview({ post }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
 
-  console.log(session);
-
   useEffect(() => {
     if (session?.activeSubscription) {
       router.push(`/posts/${post.slug}`);
@@ -69,7 +67,6 @@ export const getStaticProps: GetStaticProps = async ({
   previewData,
 }) => {
   const { slug } = params;
-  console.log({ slug });
 
   const prismic = createClient({
     previewData,
@@ -96,5 +93,6 @@ export const getStaticProps: GetStaticProps = async ({
     props: {
       post,
     },
+    revalidate: 60 * 30, // 30 minutes
   };
 };

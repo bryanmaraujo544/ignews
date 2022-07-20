@@ -44,7 +44,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   const session = await unstable_getServerSession(req, res, authOptions);
   const { slug } = params;
 
-  console.log({ session });
   if (!session?.activeSubscription) {
     return {
       redirect: {
